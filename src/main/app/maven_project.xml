@@ -26,7 +26,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 		url="jdbc:derby:memory:muleEmbeddedDB;create=true" doc:name="Derby Configuration" />
 	<jms:activemq-connector name="Active_MQ"
 		brokerURL="vm://localhost" validateConnections="true" doc:name="Active MQ" />
-	<flow name="maven_projectFlow">
+	<flow name="retrieveFlights">
 		<http:listener config-ref="HTTP_Listener_Configuration"
 			path="/flights" doc:name="HTTP" />
 		<db:select config-ref="Derby_Configuration" doc:name="Database">
@@ -37,7 +37,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 		<jms:outbound-endpoint queue="flights"
 			connector-ref="Active_MQ" doc:name="JMS" />
 	</flow>
-	<flow name="maven_projectFlow1">
+	<flow name="logFlights">
 		<jms:inbound-endpoint queue="flights"
 			connector-ref="Active_MQ" doc:name="JMS" />
 		<logger message="#[payload]" level="INFO" doc:name="Logger" />
